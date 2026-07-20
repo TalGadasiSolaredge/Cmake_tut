@@ -4,6 +4,11 @@ cmake_minimum_required(VERSION 3.15)
 # Project name and the language(s) it uses.
 project(hello LANGUAGES C)
 
+# Write build/compile_commands.json listing the exact compile flags for every
+# source file. VS Code's C/C++ extension reads it so IntelliSense knows the
+# include paths (stdint.h, cmocka.h, ...). Ninja/Makefile generators only.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Pull in the "menus" subfolder. CMake runs menus/CMakeLists.txt,
 # which defines the "menus" library target.
 add_subdirectory(menus)
@@ -20,3 +25,7 @@ target_include_directories(hello PRIVATE Inc)
 # Link the "menus" library into the app. Because menus' Inc was marked PUBLIC,
 # the app automatically gets menus' header search path too.
 target_link_libraries(hello PRIVATE menus)
+
+# Turn on CTest support, then pull in the tests folder.
+enable_testing()
+add_subdirectory(tests)

@@ -1,0 +1,47 @@
+# --- Unit tests (cmocka) ---
+
+# Where cmocka is installed on this machine (a mingw/gcc build).
+set(CMOCKA_DIR "C:/MinGW/cmocka")
+
+# --- math module test ---
+# For now we compile math_utils.c straight into the test (simplest). Once
+# math_utils becomes its own library (a later episode) we'll link that instead.
+add_executable(test_math
+    test_math.c
+    ${CMAKE_SOURCE_DIR}/Src/math_utils.c
+)
+
+target_include_directories(test_math PRIVATE
+    ${CMAKE_SOURCE_DIR}/Inc      # so it finds math_utils.h
+    ${CMOCKA_DIR}/include        # so it finds cmocka.h
+)
+
+# Link the cmocka library.
+target_link_libraries(test_math PRIVATE ${CMOCKA_DIR}/lib/libcmocka.dll.a)
+
+# cmocka is a DLL: copy it next to the test .exe so the test runs standalone.
+add_custom_command(TARGET test_math POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMOCKA_DIR}/bin/cmocka.dll $<TARGET_FILE_DIR:test_math>
+)
+
+# Register the exe with CTest so "ctest" runs it.
+add_test(NAME math_tests COMMAND test_math)
+
+
+# --- menus module test ---
+# menus is already a library target, so we just link it (no source files here).
+add_executable(test_menus test_menus.c)
+
+target_include_directories(test_menus PRIVATE ${CMOCKA_DIR}/include)
+
+# Link the menus library (brings its Inc/ headers along, since they're PUBLIC)
+# and cmocka.
+target_link_libraries(test_menus PRIVATE menus ${CMOCKA_DIR}/lib/libcmocka.dll.a)
+
+add_custom_command(TARGET test_menus POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMOCKA_DIR}/bin/cmocka.dll $<TARGET_FILE_DIR:test_menus>
+)
+
+add_test(NAME menus_tests COMMAND test_menus)
