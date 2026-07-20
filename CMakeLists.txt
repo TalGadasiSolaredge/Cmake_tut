@@ -13,6 +13,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # which defines the "menus" library target.
 add_subdirectory(menus)
 
+# Pull in the "adc" module (defines the "adc" library target).
+add_subdirectory(adc)
+
 # Build an executable called "hello" from these source files (all under Src/).
 add_executable(hello
     Src/main.c
@@ -24,7 +27,7 @@ target_include_directories(hello PRIVATE Inc)
 
 # Link the "menus" library into the app. Because menus' Inc was marked PUBLIC,
 # the app automatically gets menus' header search path too.
-target_link_libraries(hello PRIVATE menus)
+target_link_libraries(hello PRIVATE menus adc)
 
 # Turn on CTest support, then pull in the tests folder.
 enable_testing()

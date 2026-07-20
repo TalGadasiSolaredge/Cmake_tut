@@ -45,3 +45,26 @@ add_custom_command(TARGET test_menus POST_BUILD
 )
 
 add_test(NAME menus_tests COMMAND test_menus)
+
+
+# --- adc module test (demonstrates MOCKING) ---
+# Compile ONLY adc.c (the logic). We deliberately do NOT include adc_hal.c,
+# so the mock adc_read_raw() inside test_adc.c is the definition that links.
+add_executable(test_adc
+    test_adc.c
+    ${CMAKE_SOURCE_DIR}/adc/Src/adc.c
+)
+
+target_include_directories(test_adc PRIVATE
+    ${CMAKE_SOURCE_DIR}/adc/Inc
+    ${CMOCKA_DIR}/include
+)
+
+target_link_libraries(test_adc PRIVATE ${CMOCKA_DIR}/lib/libcmocka.dll.a)
+
+add_custom_command(TARGET test_adc POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMOCKA_DIR}/bin/cmocka.dll $<TARGET_FILE_DIR:test_adc>
+)
+
+add_test(NAME adc_tests COMMAND test_adc)
