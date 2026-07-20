@@ -32,6 +32,10 @@ configure_file(
 add_library(app_config INTERFACE)
 target_include_directories(app_config INTERFACE ${CMAKE_BINARY_DIR}/generated)
 
+# math_utils is now a library module too. It must come before menus, which
+# links it.
+add_subdirectory(math)
+
 # Pull in the "menus" subfolder. CMake runs menus/CMakeLists.txt,
 # which defines the "menus" library target.
 add_subdirectory(menus)
@@ -39,18 +43,17 @@ add_subdirectory(menus)
 # Pull in the "adc" module (defines the "adc" library target).
 add_subdirectory(adc)
 
-# Build an executable called "hello" from these source files (all under Src/).
+# Build an executable called "hello". The app is now just main.c -- every other
+# piece of code lives in a library.
 add_executable(hello
     Src/main.c
-    Src/math_utils.c
 )
 
-# Tell the compiler where to find this project's own headers (Inc/).
-target_include_directories(hello PRIVATE Inc)
-
-# Link the libraries into the app. menus/adc bring their PUBLIC include dirs;
-# app_config brings the generated header's include path.
-target_link_libraries(hello PRIVATE menus adc app_config)
+# Link the libraries into the app. Each library brings its own PUBLIC include
+# dirs, so the app needs no target_include_directories of its own anymore:
+#   math_utils -> math_utils.h    menus/adc -> their headers
+#   app_config -> generated app_config.h
+target_link_libraries(hello PRIVATE math_utils menus adc app_config)
 
 # Turn on CTest support, then pull in the tests folder.
 enable_testing()

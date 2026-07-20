@@ -4,20 +4,15 @@
 set(CMOCKA_DIR "C:/MinGW/cmocka")
 
 # --- math module test ---
-# For now we compile math_utils.c straight into the test (simplest). Once
-# math_utils becomes its own library (a later episode) we'll link that instead.
-add_executable(test_math
-    test_math.c
-    ${CMAKE_SOURCE_DIR}/Src/math_utils.c
-)
+# Now that math_utils is a library, we LINK it instead of recompiling its
+# source. Cleaner, and it tests the exact same object the app uses.
+add_executable(test_math test_math.c)
 
-target_include_directories(test_math PRIVATE
-    ${CMAKE_SOURCE_DIR}/Inc      # so it finds math_utils.h
-    ${CMOCKA_DIR}/include        # so it finds cmocka.h
-)
+# cmocka.h path only -- math_utils.h comes from the math_utils PUBLIC include dir.
+target_include_directories(test_math PRIVATE ${CMOCKA_DIR}/include)
 
-# Link the cmocka library.
-target_link_libraries(test_math PRIVATE ${CMOCKA_DIR}/lib/libcmocka.dll.a)
+# Link math_utils (the code under test) and cmocka.
+target_link_libraries(test_math PRIVATE math_utils ${CMOCKA_DIR}/lib/libcmocka.dll.a)
 
 # cmocka is a DLL: copy it next to the test .exe so the test runs standalone.
 add_custom_command(TARGET test_math POST_BUILD
