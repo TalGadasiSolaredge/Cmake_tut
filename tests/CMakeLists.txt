@@ -60,7 +60,8 @@ target_include_directories(test_adc PRIVATE
     ${CMOCKA_DIR}/include
 )
 
-target_link_libraries(test_adc PRIVATE ${CMOCKA_DIR}/lib/libcmocka.dll.a)
+# Links app_config too, because the adc.c we compile in now needs app_config.h.
+target_link_libraries(test_adc PRIVATE app_config ${CMOCKA_DIR}/lib/libcmocka.dll.a)
 
 add_custom_command(TARGET test_adc POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different

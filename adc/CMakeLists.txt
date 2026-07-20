@@ -7,3 +7,7 @@ add_library(adc
 )
 
 target_include_directories(adc PUBLIC Inc)
+
+# adc.c #includes the generated app_config.h (for ADC_VREF_MV). PRIVATE because
+# only adc's own .c needs it -- code that merely uses adc.h does not.
+target_link_libraries(adc PRIVATE app_config)

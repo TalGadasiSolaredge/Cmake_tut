@@ -10,13 +10,9 @@ add_library(menus
 # So the main app can #include "main_menu.h" without repeating this path.
 target_include_directories(menus PUBLIC Inc)
 
-# Only when the option is ON:
+# Whether to COMPILE debug_menu.c is a build-system decision, so it still keys
+# off the CMake option directly. (The matching #ifdef macro that main.c tests
+# now comes from the generated app_config.h, not a -D flag here.)
 if(ENABLE_DEBUG_MENU)
-    # 1) compile the extra source into this library
     target_sources(menus PRIVATE Src/debug_menu.c)
-
-    # 2) define the preprocessor macro ENABLE_DEBUG_MENU (this is what turns
-    #    -D<name> on for the compiler). PUBLIC means anything linking "menus"
-    #    -- like the app -- ALSO gets the macro, so main.c's #ifdef sees it.
-    target_compile_definitions(menus PUBLIC ENABLE_DEBUG_MENU)
 endif()

@@ -1,0 +1,27 @@
+#ifndef APP_CONFIG_H
+#define APP_CONFIG_H
+
+/*
+ * GENERATED FILE -- do not edit the copy in build/generated/app_config.h.
+ * CMake produces it from this template (config/app_config.h.in) via
+ * configure_file(). Change the values through CMake options instead, e.g.
+ *   cmake -S . -B build -D VERBOSE_LOGGING=ON -D ADC_VREF_MV=3300
+ */
+
+/* --- on/off flags ---
+ * Each line becomes "#define X" when the CMake variable is ON/true,
+ * or a commented-out #undef when OFF/false. Test with #ifdef / #ifndef. */
+#cmakedefine ENABLE_DEBUG_MENU
+#cmakedefine ENABLE_STARTUP_BANNER
+
+/* --- 0/1 flag ---
+ * Always #defined, to 0 or 1. Test with #if (NOT #ifdef, since it is
+ * always defined). Handy when you want an "always has a value" flag. */
+#cmakedefine01 VERBOSE_LOGGING
+
+/* --- value substitutions ---
+ * @VAR@ is replaced with the CMake variable's value verbatim. */
+#define ADC_VREF_MV @ADC_VREF_MV@
+#define APP_VERSION "@PROJECT_VERSION@"
+
+#endif /* APP_CONFIG_H */
