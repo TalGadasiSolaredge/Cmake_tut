@@ -9,6 +9,11 @@ project(hello LANGUAGES C)
 # include paths (stdint.h, cmocka.h, ...). Ninja/Makefile generators only.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# A user-settable build option. Default OFF. Flip it at configure time with:
+#   cmake -S . -B build -D ENABLE_DEBUG_MENU=ON
+# The value is remembered in the CMake cache until you change it again.
+option(ENABLE_DEBUG_MENU "Include the debug menu screen" OFF)
+
 # Pull in the "menus" subfolder. CMake runs menus/CMakeLists.txt,
 # which defines the "menus" library target.
 add_subdirectory(menus)

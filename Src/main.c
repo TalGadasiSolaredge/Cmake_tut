@@ -4,6 +4,10 @@
 #include "settings_menu.h"
 #include "adc.h"
 
+#ifdef ENABLE_DEBUG_MENU
+#include "debug_menu.h"
+#endif
+
 int main(void)
 {
     printf("Hello, World!\n");
@@ -13,5 +17,10 @@ int main(void)
     print_main_menu();
     printf("\n");
     print_settings_menu();
+
+#ifdef ENABLE_DEBUG_MENU
+    printf("\n");
+    print_debug_menu();
+#endif
     return 0;
 }
