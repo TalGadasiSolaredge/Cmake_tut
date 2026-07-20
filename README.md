@@ -12,7 +12,17 @@ git checkout ep04-menus-library
 ```
 
 The written walkthrough for every episode lives in the [`book/`](book/) folder
-on the `main` branch.
+on the `main` branch. A rendered, single-file version is also here as
+[`CMake-by-Example.pdf`](CMake-by-Example.pdf) (99 pages).
+
+### Rebuild the PDF
+
+```bash
+bash tools/make-pdf.sh      # needs Node.js + Chrome or Edge
+```
+
+This converts `book/*.md` to a styled HTML book (via `marked`) and prints it to
+`CMake-by-Example.pdf` with a headless browser.
 
 ## Toolchain
 

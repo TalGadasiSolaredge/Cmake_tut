@@ -11,3 +11,7 @@
 
 # Throwaway verification worktrees (if ever created inside the repo)
 /verify/
+
+# Node tooling for the PDF build (regenerate with `npm install`)
+tools/node_modules/
+tools/package-lock.json
