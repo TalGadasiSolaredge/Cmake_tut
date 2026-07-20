@@ -1,0 +1,13 @@
+# CMake build output — always generated, never committed.
+/build/
+
+# Compiled artifacts
+*.exe
+*.dll
+*.obj
+*.o
+*.a
+*.lib
+
+# Throwaway verification worktrees (if ever created inside the repo)
+/verify/
