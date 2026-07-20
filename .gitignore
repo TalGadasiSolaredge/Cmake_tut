@@ -15,3 +15,7 @@
 # Node tooling for the PDF build (regenerate with `npm install`)
 tools/node_modules/
 tools/package-lock.json
+# Stray npm files must not appear at the repo root (this is a C project)
+/package.json
+/package-lock.json
+/node_modules/
